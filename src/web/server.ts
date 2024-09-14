@@ -1,18 +1,19 @@
-import bodyParser from "body-parser";
-import express from "express";
-import sequelize from "../config/database";
+import app from './app';
+import dotenv from 'dotenv';
+import { connectDatabase } from '../database/config/database';
 
-const app = express();
-const port = process.env.PORT;
+dotenv.config();
+const PORT = process.env.PORT;
 
-app.use(bodyParser.json());
+app.get('/', async (req, res) => {
+    try {
+      await connectDatabase();
+      res.send('Banco de dados conectado com sucesso!');
+    } catch (error) {
+      res.status(500).send('Não foi possível conectar ao banco de dados.');
+    }
+});
 
-sequelize.sync()
-    .then(() => {
-        console.log('Banco de dados conectado com sucesso!');
-        app.listen(port, () => {
-        console.log(`Servidor iniciado em http://localhost:${port}`);
-        });
-}).catch(err => {
-    console.error('Erro ao conectar ao banco de dados', err);
+app.listen(PORT, () => {
+    console.log(`Servidor iniciado na porta http://localhost:${PORT}`);
 });
