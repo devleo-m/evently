@@ -1,187 +1,393 @@
 {
-    "openapi": "3.0.0",
-    "info": {
-      "version": "1.0.0",
-      "title": "User API",
-      "description": "API para gerenciar usuários",
-      "contact": {
-        "name": "Leonardo Madeira",
-        "url": "https://github.com/devleo-m"
-      }
-    },
-    "servers": [
-      {
-        "url": "http://localhost:3000",
-        "description": "Servidor de desenvolvimento"
-      }
-    ],
-    "components": {
-        "schemas": {
-          "User": {
-            "type": "object",
-            "properties": {
-              "id": {
-                "type": "integer"
-              },
-              "email": {
-                "type": "string",
-                "format": "email"
-              },
-              "password": {
-                "type": "string"
-              }
-            }
+  "openapi": "3.0.0",
+  "info": {
+    "version": "1.0.0",
+    "title": "User API",
+    "description": "API para gerenciar usuários",
+    "contact": {
+      "name": "Leonardo Madeira",
+      "url": "https://github.com/devleo-m"
+    }
+  },
+  "servers": [
+    {
+      "url": "http://localhost:3000",
+      "description": "Servidor de desenvolvimento"
+    }
+  ],
+  "components": {
+    "schemas": {
+      "User": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer"
           },
-          "UserInput": {
-            "type": "object",
-            "properties": {
-              "email": {
-                "type": "string",
-                "format": "email"
-              },
-              "password": {
-                "type": "string",
-                "minLength": 6
-              }
-            },
-            "required": ["email", "password"]
+          "email": {
+            "type": "string",
+            "format": "email"
+          },
+          "password": {
+            "type": "string"
           }
         }
       },
-    "paths": {
-      "/api/users": {
-        "get": {
-          "tags": ["Usuario"],
-          "summary": "Obtém a lista de usuários",
-          "description": "Retorna uma lista de todos os usuários.",
-          "responses": {
-            "200": {
-              "description": "Lista de usuários",
-              "content": {
-                "application/json": {
-                  "schema": {
-                    "type": "array",
-                    "items": {
-                      "$ref": "#/components/schemas/User"
-                    }
-                  }
-                }
-              }
-            }
+      "UserInput": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string",
+            "format": "email"
+          },
+          "password": {
+            "type": "string",
+            "minLength": 6
           }
         },
-        "post": {
-          "summary": "Cria um novo usuário",
-          "tags": ["Usuario"],
-          "description": "Cria um novo usuário na base de dados.",
-          "requestBody": {
-            "required": true,
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "$ref": "#/components/schemas/UserInput"
-                }
-              }
-            }
+        "required": ["email", "password"]
+      },
+      "Profile": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "example": 1
           },
-          "responses": {
-            "201": {
-              "description": "Usuário criado com sucesso",
-              "content": {
-                "application/json": {
-                  "schema": {
-                    "type": "object",
-                    "$ref": "#/components/schemas/User"
-                  }
-                }
-              }
-            }
+          "name": {
+            "type": "string",
+            "example": "John Doe"
+          },
+          "bio": {
+            "type": "string",
+            "example": "This is a bio"
+          },
+          "birth_date": {
+            "type": "string",
+            "format": "date",
+            "example": "1990-01-01"
+          },
+          "user_id": {
+            "type": "integer",
+            "example": 1
           }
         }
       },
-      "/api/users/{id}": {
-        "get": {
-          "tags": ["Usuario"],
-          "summary": "Obtém um usuário por ID",
-          "parameters": [
-            {
-              "name": "id",
-              "in": "path",
-              "required": true,
-              "schema": {
-                "type": "integer"
-              }
-            }
-          ],
-          "responses": {
-            "200": {
-              "description": "Usuário encontrado",
-              "content": {
-                "application/json": {
-                  "schema": {
-                    "$ref": "#/components/schemas/User"
-                  }
-                }
-              }
-            }
-          }
-        },
-        "put": {
-          "tags": ["Usuario"],
-          "summary": "Atualiza um usuário",
-          "parameters": [
-            {
-              "name": "id",
-              "in": "path",
-              "required": true,
-              "schema": {
-                "type": "integer"
-              }
-            }
-          ],
-          "requestBody": {
-            "required": true,
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/UserInput"
-                }
-              }
-            }
+      "ProfileCreate": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "example": "John Doe"
           },
-          "responses": {
-            "200": {
-              "description": "Usuário atualizado",
-              "content": {
-                "application/json": {
-                  "schema": {
-                    "$ref": "#/components/schemas/User"
-                  }
-                }
-              }
-            }
+          "bio": {
+            "type": "string",
+            "example": "This is a bio"
+          },
+          "birth_date": {
+            "type": "string",
+            "format": "date",
+            "example": "1990-01-01"
+          },
+          "user_id": {
+            "type": "integer",
+            "example": 1
           }
         },
-        "delete": {
-          "tags": ["Usuario"],
-          "summary": "Deleta um usuário",
-          "parameters": [
-            {
-              "name": "id",
-              "in": "path",
-              "required": true,
-              "schema": {
-                "type": "integer"
-              }
-            }
-          ],
-          "responses": {
-            "200": {
-              "description": "Usuário deletado com sucesso"
-            }
+        "required": ["name", "bio", "birth_date", "user_id"]
+      },
+      "ProfileUpdate": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "example": "John Doe Updated"
+          },
+          "bio": {
+            "type": "string",
+            "example": "This is an updated bio"
+          },
+          "birth_date": {
+            "type": "string",
+            "format": "date",
+            "example": "1990-01-01"
+          },
+          "user_id": {
+            "type": "integer",
+            "example": 1
           }
         }
       }
     }
-  }  
+  },
+  "paths": {
+    "/api/users": {
+      "get": {
+        "tags": ["Usuario"],
+        "summary": "Obtém a lista de usuários",
+        "description": "Retorna uma lista de todos os usuários.",
+        "responses": {
+          "200": {
+            "description": "Lista de usuários",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/User"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Cria um novo usuário",
+        "tags": ["Usuario"],
+        "description": "Cria um novo usuário na base de dados.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "$ref": "#/components/schemas/UserInput"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Usuário criado com sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "$ref": "#/components/schemas/User"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/users/{id}": {
+      "get": {
+        "tags": ["Usuario"],
+        "summary": "Obtém um usuário por ID",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Usuário encontrado",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/User"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": ["Usuario"],
+        "summary": "Atualiza um usuário",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UserInput"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Usuário atualizado",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/User"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": ["Usuario"],
+        "summary": "Deleta um usuário",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Usuário deletado com sucesso"
+          }
+        }
+      }
+    },
+    "/api/profiles": {
+      "get": {
+        "tags": ["Perfil"],
+        "summary": "Listar todos os perfis",
+        "description": "Recupera uma lista de todos os perfis.",
+        "responses": {
+          "200": {
+            "description": "Lista de perfis",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Profile"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": ["Perfil"],
+        "summary": "Criar um novo perfil",
+        "description": "Cria um novo perfil.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ProfileCreate"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Perfil criado com sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Profile"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/profiles/{id}": {
+      "get": {
+        "tags": ["Perfil"],
+        "summary": "Obter um perfil pelo ID",
+        "description": "Recupera um perfil específico pelo ID.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Perfil encontrado",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Profile"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": ["Perfil"],
+        "summary": "Atualizar um perfil existente",
+        "description": "Atualiza um perfil existente pelo ID.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ProfileUpdate"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Perfil atualizado com sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Profile"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": ["Perfil"],
+        "summary": "Excluir um perfil",
+        "description": "Exclui um perfil pelo ID.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Perfil excluído com sucesso"
+          }
+        }
+      }
+    }
+  }
+}
