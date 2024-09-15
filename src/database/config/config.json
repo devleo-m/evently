@@ -5,6 +5,6 @@
     "database": "evently",
     "host": "localhost",
     "dialect": "postgres",
-    "port": 5435
+    "port": 5432
   }
 }
