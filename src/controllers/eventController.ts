@@ -14,15 +14,10 @@ export namespace eventController {
 
   export const createEvent = async (req: Request, res: Response) => {
     try {
-      // Validar e parsear os dados
       const parsedData = eventSchema.parse(req.body);
-
-      // Convertendo a data para o formato esperado pelo banco de dados, se necessário
-      // Exemplo: Se precisar converter DD/MM/YYYY para YYYY-MM-DD
       const [day, month, year] = parsedData.event_date.split('/');
       const formattedDate = `${year}-${month}-${day}`;
       
-      // Criar o evento com os dados validados e a data formatada
       const event = await Event.create({
         ...parsedData,
         event_date: formattedDate
@@ -35,7 +30,6 @@ export namespace eventController {
           .status(400)
           .json({ message: "Dados inválidos", errors: error.errors });
       }
-      console.error('Erro ao criar evento:', error); // Adicione logs para depuração
       res.status(500).json({ message: "Erro ao criar evento" });
     }
   };
