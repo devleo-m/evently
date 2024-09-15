@@ -47,28 +47,45 @@ export namespace eventController {
     }
   };
 
+  
   export const updateEvent = async (req: Request, res: Response) => {
     const { id } = req.params;
-
+  
     try {
       const parsedData = eventSchema.parse(req.body);
-      const [updated] = await Event.update(parsedData, { where: { id } });
-
+  
+      // Verificar se a data é válida
+      const [day, month, year] = parsedData.event_date.split("/");
+      const formattedDate = `${year}-${month}-${day}`;
+  
+      // Atualizar o evento no banco de dados
+      const [updated] = await Event.update(
+        { ...parsedData, event_date: formattedDate },
+        { where: { id } }
+      );
+  
       if (updated) {
         const updatedEvent = await Event.findByPk(id);
-        return res.json(updatedEvent);
+        if (updatedEvent) {
+          return res.json(updatedEvent);
+        }
+        return res.status(404).json({ message: "Evento não encontrado" });
       } else {
         return res.status(404).json({ message: "Evento não encontrado" });
       }
     } catch (error) {
+      console.error('Erro ao atualizar evento:', error);
+  
       if (error instanceof z.ZodError) {
         return res
           .status(400)
           .json({ message: "Dados inválidos", errors: error.errors });
       }
+  
       return res.status(500).json({ message: "Erro ao atualizar evento" });
     }
   };
+  
 
   export const deleteEvent = async (req: Request, res: Response) => {
     try {
