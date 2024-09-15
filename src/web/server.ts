@@ -16,4 +16,5 @@ app.get('/', async (req, res) => {
 
 app.listen(PORT, () => {
     console.log(`Servidor iniciado na porta http://localhost:${PORT}`);
+    console.log(`Swagger http://localhost:${PORT}/api-docs`);
 });
