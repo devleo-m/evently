@@ -2,8 +2,8 @@
   "openapi": "3.0.0",
   "info": {
     "version": "1.0.0",
-    "title": "User API",
-    "description": "API para gerenciar usuários",
+    "title": "Evently API",
+    "description": "A API para gerenciar usuários, perfis, eventos e participações. Permite realizar um CRUD e registros relacionados a eventos e usuários, além de gerenciar a participação de usuários em eventos.",
     "contact": {
       "name": "Leonardo Madeira",
       "url": "https://github.com/devleo-m"
@@ -164,7 +164,7 @@
     "/api/users": {
       "get": {
         "tags": ["Usuario"],
-        "summary": "Obtém a lista de usuários",
+        "summary": "Listar todos os usuários",
         "description": "Retorna uma lista de todos os usuários.",
         "responses": {
           "200": {
@@ -185,7 +185,7 @@
       "post": {
         "summary": "Cria um novo usuário",
         "tags": ["Usuario"],
-        "description": "Cria um novo usuário na base de dados.",
+        "description": "Cria um novo usuário.",
         "requestBody": {
           "required": true,
           "content": {
@@ -215,7 +215,7 @@
     "/api/users/{id}": {
       "get": {
         "tags": ["Usuario"],
-        "summary": "Obtém um usuário por ID",
+        "summary": "Lista um usuario por ID",
         "parameters": [
           {
             "name": "id",
