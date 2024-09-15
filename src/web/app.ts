@@ -1,6 +1,7 @@
 import express from 'express';
 import cors from 'cors';
 import userRouter from '../routes/userRouter';
+import profileRouter from '../routes/profileRoutes';
 import swaggerDocument from './swagger.json';
 import swaggerUi from 'swagger-ui-express';
 
@@ -14,5 +15,6 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 //Rotas
 app.use("/api", userRouter);
+app.use("/api", profileRouter);
 
 export default app;
