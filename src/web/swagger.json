@@ -139,6 +139,24 @@
           }
         },
         "required": ["title", "event_date", "creator_id"]
+      },
+      "Participation": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "example": 1
+          },
+          "user_id": {
+            "type": "integer",
+            "example": 1
+          },
+          "event_id": {
+            "type": "integer",
+            "example": 1
+          }
+        },
+        "required": ["user_id", "event_id"]
       }
     }
   },
@@ -536,6 +554,136 @@
         "responses": {
           "200": {
             "description": "Evento deletado com sucesso"
+          }
+        }
+      }
+    },
+    "/api/participations": {
+      "get": {
+        "tags": ["Participação"],
+        "summary": "Listar Participações",
+        "responses": {
+          "200": {
+            "description": "Lista de participações",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Participation"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": ["Participação"],
+        "summary": "Criar Participação",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Participation"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Participação criada com sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Participation"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/participations/{id}": {
+      "get": {
+        "tags": ["Participação"],
+        "summary": "Buscar Participação por ID",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Participação encontrada",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Participation"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": ["Participação"],
+        "summary": "Atualizar Participação",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Participation"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Participação atualizada com sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Participation"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": ["Participação"],
+        "summary": "Deletar Participação",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Participação deletada com sucesso"
           }
         }
       }
