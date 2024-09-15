@@ -1,7 +1,17 @@
-version: '3.9'
+services:
+  app:
+    build: .
+    container_name: evently-container-dev
+    ports:
+      - '3000:3000'
+    env_file:
+      - .env
+    depends_on:
+      - postgres_dev
+    networks:
+      - evently-network
 
-services:   
-  postgres:
+  postgres_dev:
     image: postgres:14-alpine
     container_name: evently-container
     restart: always
@@ -11,3 +21,9 @@ services:
       - POSTGRES_DB=${POSTGRES_DB}
     ports:
       - "${POSTGRES_PORT}:5432"
+    networks:
+      - evently-network
+
+networks:
+  evently-network:
+    driver: bridge

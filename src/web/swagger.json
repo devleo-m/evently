@@ -28,7 +28,8 @@
             "format": "email"
           },
           "password": {
-            "type": "string"
+            "type": "string",
+            "exemple": "123456"
           }
         }
       },
@@ -120,14 +121,13 @@
       "Event": {
         "type": "object",
         "properties": {
-          "id": {
-            "type": "integer"
-          },
           "title": {
-            "type": "string"
+            "type": "string",
+            "example": "Event Title"
           },
           "description": {
-            "type": "string"
+            "type": "string",
+            "example": "This is a description"
           },
           "event_date": {
             "type": "string",
@@ -135,7 +135,8 @@
             "example": "15/09/2024"
           },
           "creator_id": {
-            "type": "integer"
+            "type": "integer",
+            "example": 1
           }
         },
         "required": ["title", "event_date", "creator_id"]

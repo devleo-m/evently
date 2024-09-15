@@ -1,9 +1,7 @@
-// src/web/controllers/profileController.ts
 import { Request, Response } from 'express';
 import Profile from '../database/models/profile';
 import { z } from 'zod';
 
-// Definindo o esquema de validação
 const profileSchema = z.object({
   name: z.string().min(1),
   bio: z.string().optional(),
