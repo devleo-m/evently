@@ -49,11 +49,20 @@ export namespace eventController {
 
   export const updateEvent = async (req: Request, res: Response) => {
     const { id } = req.params;
-
+  
     try {
       const parsedData = eventSchema.parse(req.body);
-      const [updated] = await Event.update(parsedData, { where: { id } });
-
+      
+      // Converter a data para o formato ISO (YYYY-MM-DD)
+      const [day, month, year] = parsedData.event_date.split("/");
+      const formattedDate = `${year}-${month}-${day}`;
+      
+      // Atualizar o evento com a data formatada
+      const [updated] = await Event.update(
+        { ...parsedData, event_date: formattedDate }, 
+        { where: { id } }
+      );
+  
       if (updated) {
         const updatedEvent = await Event.findByPk(id);
         return res.json(updatedEvent);
@@ -68,7 +77,7 @@ export namespace eventController {
       }
       return res.status(500).json({ message: "Erro ao atualizar evento" });
     }
-  };
+  }  
 
   export const deleteEvent = async (req: Request, res: Response) => {
     try {
