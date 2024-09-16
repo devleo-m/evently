@@ -4,8 +4,8 @@
   "main": "src/web/server.ts",
   "scripts": {
     "build": "tsc",
-    "dev": "nodemon --exec ts-node src/web/server.ts",
-    "start": "node dist/web/server.js",
+    "start": "nodemon --exec ts-node src/web/server.ts",
+    "prod": "node dist/web/server.js",
     "test": "jest"
   },
   "keywords": [],
