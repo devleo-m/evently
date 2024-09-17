@@ -53,14 +53,14 @@ export namespace eventController {
   
     try {
       const parsedData = eventSchema.parse(req.body);
-  
-      // Verificar se a data é válida
+      
+      // Converter a data para o formato ISO (YYYY-MM-DD)
       const [day, month, year] = parsedData.event_date.split("/");
       const formattedDate = `${year}-${month}-${day}`;
-  
-      // Atualizar o evento no banco de dados
+      
+      // Atualizar o evento com a data formatada
       const [updated] = await Event.update(
-        { ...parsedData, event_date: formattedDate },
+        { ...parsedData, event_date: formattedDate }, 
         { where: { id } }
       );
   
@@ -85,7 +85,6 @@ export namespace eventController {
       return res.status(500).json({ message: "Erro ao atualizar evento" });
     }
   };
-  
 
   export const deleteEvent = async (req: Request, res: Response) => {
     try {

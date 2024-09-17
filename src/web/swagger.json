@@ -16,7 +16,31 @@
     }
   ],
   "components": {
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    },
     "schemas": {
+      "Auth": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "example": 1
+          },
+          "email": {
+            "type": "string",
+            "example": "email@gmail.com"
+          },
+          "password": {
+            "type": "string",
+            "example": "$2a$10$7lWjefipx1b..."
+          }
+        }
+      },
       "User": {
         "type": "object",
         "properties": {
@@ -162,11 +186,112 @@
     }
   },
   "paths": {
+    "/login": {
+      "post": {
+        "tags": ["Autenticação"],
+        "summary": "Login de usuário",
+        "description": "Faz login do usuário e retorna um token JWT.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "email": {
+                    "type": "string",
+                    "example": "test@example.com"
+                  },
+                  "password": {
+                    "type": "string",
+                    "example": "password123"
+                  }
+                },
+                "required": ["email", "password"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Login bem-sucedido.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Login bem-sucedido."
+                    },
+                    "token": {
+                      "type": "string",
+                      "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/register": {
+      "post": {
+        "tags": ["Autenticação"],
+        "summary": "Registrar novo usuário",
+        "description": "Registra um novo usuário e retorna um token JWT.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "email": {
+                    "type": "string",
+                    "example": "email@gmail.com"
+                  },
+                  "password": {
+                    "type": "string",
+                    "example": "root123"
+                  }
+                },
+                "required": ["email", "password"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Usuário registrado com sucesso.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Usuário registrado com sucesso."
+                    },
+                    "token": {
+                      "type": "string",
+                      "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/users": {
       "get": {
         "tags": ["Usuario"],
         "summary": "Listar todos os usuários",
         "description": "Retorna uma lista de todos os usuários.",
+        "security": [{ "bearerAuth": [] }],
         "responses": {
           "200": {
             "description": "Lista de usuários",
@@ -187,6 +312,7 @@
         "summary": "Cria um novo usuário",
         "tags": ["Usuario"],
         "description": "Cria um novo usuário.",
+        "security": [{ "bearerAuth": [] }],
         "requestBody": {
           "required": true,
           "content": {
@@ -217,6 +343,7 @@
       "get": {
         "tags": ["Usuario"],
         "summary": "Lista um usuario por ID",
+        "security": [{ "bearerAuth": [] }],
         "parameters": [
           {
             "name": "id",
@@ -243,6 +370,7 @@
       "put": {
         "tags": ["Usuario"],
         "summary": "Atualiza um usuário",
+        "security": [{ "bearerAuth": [] }],
         "parameters": [
           {
             "name": "id",
@@ -279,6 +407,7 @@
       "delete": {
         "tags": ["Usuario"],
         "summary": "Deleta um usuário",
+        "security": [{ "bearerAuth": [] }],
         "parameters": [
           {
             "name": "id",
@@ -301,6 +430,7 @@
         "tags": ["Perfil"],
         "summary": "Listar todos os perfis",
         "description": "Recupera uma lista de todos os perfis.",
+        "security": [{ "bearerAuth": [] }],
         "responses": {
           "200": {
             "description": "Lista de perfis",
@@ -321,6 +451,7 @@
         "tags": ["Perfil"],
         "summary": "Criar um novo perfil",
         "description": "Cria um novo perfil.",
+        "security": [{ "bearerAuth": [] }],
         "requestBody": {
           "required": true,
           "content": {
@@ -350,6 +481,7 @@
         "tags": ["Perfil"],
         "summary": "Obter um perfil pelo ID",
         "description": "Recupera um perfil específico pelo ID.",
+        "security": [{ "bearerAuth": [] }],
         "parameters": [
           {
             "name": "id",
@@ -377,6 +509,7 @@
         "tags": ["Perfil"],
         "summary": "Atualizar um perfil existente",
         "description": "Atualiza um perfil existente pelo ID.",
+        "security": [{ "bearerAuth": [] }],
         "parameters": [
           {
             "name": "id",
@@ -414,6 +547,7 @@
         "tags": ["Perfil"],
         "summary": "Excluir um perfil",
         "description": "Exclui um perfil pelo ID.",
+        "security": [{ "bearerAuth": [] }],
         "parameters": [
           {
             "name": "id",
@@ -435,6 +569,7 @@
       "get": {
         "tags": ["Evento"],
         "summary": "Listar todos os eventos",
+        "security": [{ "bearerAuth": [] }],
         "responses": {
           "200": {
             "description": "Lista de eventos",
@@ -454,6 +589,7 @@
       "post": {
         "tags": ["Evento"],
         "summary": "Cria um novo evento",
+        "security": [{ "bearerAuth": [] }],
         "requestBody": {
           "content": {
             "application/json": {
@@ -481,6 +617,7 @@
       "get": {
         "tags": ["Evento"],
         "summary": "Lista evento por ID",
+        "security": [{ "bearerAuth": [] }],
         "parameters": [
           {
             "name": "id",
@@ -507,6 +644,7 @@
       "put": {
         "tags": ["Evento"],
         "summary": "Atualiza evento por ID",
+        "security": [{ "bearerAuth": [] }],
         "parameters": [
           {
             "name": "id",
@@ -542,6 +680,7 @@
       "delete": {
         "tags": ["Evento"],
         "summary": "Deleta um evento por ID",
+        "security": [{ "bearerAuth": [] }],
         "parameters": [
           {
             "name": "id",
@@ -563,6 +702,7 @@
       "get": {
         "tags": ["Participação"],
         "summary": "Listar Participações",
+        "security": [{ "bearerAuth": [] }],
         "responses": {
           "200": {
             "description": "Lista de participações",
@@ -582,6 +722,7 @@
       "post": {
         "tags": ["Participação"],
         "summary": "Criar Participação",
+        "security": [{ "bearerAuth": [] }],
         "requestBody": {
           "required": true,
           "content": {
@@ -610,6 +751,7 @@
       "get": {
         "tags": ["Participação"],
         "summary": "Buscar Participação por ID",
+        "security": [{ "bearerAuth": [] }],
         "parameters": [
           {
             "name": "id",
@@ -636,6 +778,7 @@
       "put": {
         "tags": ["Participação"],
         "summary": "Atualizar Participação",
+        "security": [{ "bearerAuth": [] }],
         "parameters": [
           {
             "name": "id",
@@ -672,6 +815,7 @@
       "delete": {
         "tags": ["Participação"],
         "summary": "Deletar Participação",
+        "security": [{ "bearerAuth": [] }],
         "parameters": [
           {
             "name": "id",
