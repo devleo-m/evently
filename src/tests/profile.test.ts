@@ -16,7 +16,7 @@ describe("Profile API", () => {
         name: "John Doe",
         bio: "This is a bio",
         birth_date: "1990-01-01",
-        user_id: 1,
+        user_id: 3,
       });
 
     expect(createResponse.status).toBe(201);
@@ -61,7 +61,7 @@ describe("Profile API", () => {
         name: "John Doe",
         bio: "This is a bio",
         birth_date: "1990-01-01",
-        user_id: 2,
+        user_id: 4,
       });
 
     const deleteResponse = await supertest(app)

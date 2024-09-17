@@ -47,6 +47,7 @@ export namespace eventController {
     }
   };
 
+  
   export const updateEvent = async (req: Request, res: Response) => {
     const { id } = req.params;
   
@@ -65,19 +66,25 @@ export namespace eventController {
   
       if (updated) {
         const updatedEvent = await Event.findByPk(id);
-        return res.json(updatedEvent);
+        if (updatedEvent) {
+          return res.json(updatedEvent);
+        }
+        return res.status(404).json({ message: "Evento não encontrado" });
       } else {
         return res.status(404).json({ message: "Evento não encontrado" });
       }
     } catch (error) {
+      console.error('Erro ao atualizar evento:', error);
+  
       if (error instanceof z.ZodError) {
         return res
           .status(400)
           .json({ message: "Dados inválidos", errors: error.errors });
       }
+  
       return res.status(500).json({ message: "Erro ao atualizar evento" });
     }
-  }  
+  };
 
   export const deleteEvent = async (req: Request, res: Response) => {
     try {
