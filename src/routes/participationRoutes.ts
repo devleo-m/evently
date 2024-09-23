@@ -4,9 +4,9 @@ import authenticateToken from '../middleware/authMiddleware';
 
 const router = Router();
 
-router.get('/participations', authenticateToken, participationController.getParticipations);
 router.post('/participations', authenticateToken, participationController.createParticipation);
-router.get('/participations/:id', authenticateToken, participationController.getParticipationById);
+router.get('/participations', authenticateToken, participationController.findAllParticipations);
+router.get('/participations/:id', authenticateToken, participationController.findParticipationById);
 router.put('/participations/:id', authenticateToken, participationController.updateParticipation);
 router.delete('/participations/:id', authenticateToken, participationController.deleteParticipation);
 
