@@ -1,4 +1,4 @@
-import Participation, { ParticipationAtributes, ParticipationCreationAttributes } from "../database/models/participation";
+import Participation, { ParticipationAttributes, ParticipationCreationAttributes } from "../database/models/participation";
 
 class ParticipationRepository{
     async createParticipation(participation: ParticipationCreationAttributes): Promise<Participation> {
@@ -25,7 +25,7 @@ class ParticipationRepository{
         }    
     }
 
-    async updateParticipation(id: number, participation: Partial<ParticipationAtributes>): Promise<Participation | null> {
+    async updateParticipation(id: number, participation: Partial<ParticipationAttributes>): Promise<Participation | null> {
         try {
             const existingParticipation = await this.findByIdParticipation(id);
             if (!existingParticipation) {
