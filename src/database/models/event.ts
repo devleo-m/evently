@@ -1,12 +1,22 @@
-import { Model, DataTypes } from 'sequelize';
+import { Model, DataTypes, Optional } from 'sequelize';
 import sequelize from '../../config/database';
 import User from './user';
 
-class Event extends Model {
+export interface EventAttributes {
+  id: number;
+  title: string;
+  description: string;
+  event_date: Date;
+  creator_id: number;
+}
+
+export interface EventCreationAttributes extends Optional<EventAttributes, 'id' | 'description'> {}
+
+class Event extends Model<EventAttributes, EventCreationAttributes> implements EventAttributes {
   public id!: number;
   public title!: string;
   public description!: string;
-  public event_date!: string;
+  public event_date!: Date;
   public creator_id!: number;
 }
 
@@ -26,8 +36,9 @@ Event.init(
       allowNull: true,
     },
     event_date: {
-      type: DataTypes.STRING,
+      type: DataTypes.DATE,
       allowNull: false,
+      defaultValue: new Date(),
     },
     creator_id: {
       type: DataTypes.INTEGER,

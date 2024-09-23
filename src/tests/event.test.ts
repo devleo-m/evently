@@ -15,7 +15,7 @@ describe("Event API", () => {
           .send({
             title: "Evento Exemplo",
             description: "Descrição do evento",
-            event_date: "23/09/2024",
+            event_date: "2025/01/01",
             creator_id: 1,
           });
       
@@ -42,7 +42,7 @@ describe("Event API", () => {
           .send({
             title: "Event to be fetched",
             description: "This event will be fetched",
-            event_date: "02/04/2023", // Use um formato de data válido
+            event_date: "2026/01/01", // Use um formato de data válido
             creator_id: 1
           });
       
@@ -63,7 +63,7 @@ describe("Event API", () => {
       .send({
         title: "Updated Event Title",
         description: "Updated event description",
-        event_date: "04/02/2024",
+        event_date: "2030/01/01",
         creator_id: 2,
       });
   
@@ -76,7 +76,7 @@ describe("Event API", () => {
       .send({
         title: "Event to be deleted",
         description: "This event will be deleted",
-        event_date: "01/04/2024", 
+        event_date: "2025/05/05", 
         creator_id: 1
       });
   

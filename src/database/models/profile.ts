@@ -1,8 +1,18 @@
-import { Model, DataTypes } from "sequelize";
+import { Model, DataTypes, Optional } from "sequelize";
 import sequelize from "../../config/database";
 import User from "./user";
 
-class Profile extends Model {
+export interface ProfileAttributes {
+  id: number;
+  name: string;
+  bio?: string;
+  birth_date?: Date;
+  user_id: number;
+}
+
+export interface ProfileCreationAttributes extends Optional<ProfileAttributes, 'id' | 'bio' | 'birth_date'> {}
+
+class Profile extends Model<ProfileAttributes, ProfileCreationAttributes> implements ProfileAttributes  {
   public id!: number;
   public name!: string;
   public bio?: string;
@@ -26,7 +36,7 @@ Profile.init(
       allowNull: true,
     },
     birth_date: {
-      type: DataTypes.DATE,
+      type: DataTypes.DATEONLY,
       allowNull: true,
     },
     user_id: {
