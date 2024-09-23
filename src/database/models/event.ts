@@ -1,8 +1,18 @@
-import { Model, DataTypes } from 'sequelize';
+import { Model, DataTypes, Optional } from 'sequelize';
 import sequelize from '../../config/database';
 import User from './user';
 
-class Event extends Model {
+export interface EventAtributes {
+  id: number;
+  title: string;
+  description: string;
+  event_date: string;
+  creator_id: number;
+}
+
+export interface EventCreationAttributes extends Optional<EventAtributes, 'id'> {}
+
+class Event extends Model<EventAtributes, EventCreationAttributes> implements EventAtributes {
   public id!: number;
   public title!: string;
   public description!: string;

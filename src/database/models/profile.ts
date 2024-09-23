@@ -1,8 +1,18 @@
-import { Model, DataTypes } from "sequelize";
+import { Model, DataTypes, Optional } from "sequelize";
 import sequelize from "../../config/database";
 import User from "./user";
 
-class Profile extends Model {
+export interface ProfileAtributes {
+  id: number;
+  name: string;
+  bio?: string;
+  birth_date?: Date;
+  user_id: number;
+}
+
+export interface ProfileCreationAttributes extends Optional<ProfileAtributes, 'id' | 'bio' | 'birth_date'> {}
+
+class Profile extends Model<ProfileAtributes, ProfileCreationAttributes> implements ProfileAtributes  {
   public id!: number;
   public name!: string;
   public bio?: string;
