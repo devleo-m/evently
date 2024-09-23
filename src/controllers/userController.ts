@@ -1,84 +1,83 @@
 import { Request, Response } from "express";
 import User from "../database/models/user";
-import { z } from "zod";
+import { z, ZodError } from "zod";
+import userService from "../service/userService";
 
 const userSchema = z.object({
   email: z.string().email(),
-  password: z.string().min(6), //no caso a senha deve ter no min 6 caracters
+  password: z.string().min(6),
 });
 
+const userUpdateSchema = z.object({
+  email: z.string().email().optional(),
+  password: z.string().min(6).optional(),
+});
+
+export const IdSchema = z.object({
+  id: z.coerce.number().int().positive(),
+})
+
 export namespace userController {
-  export const getUsers = async (req: Request, res: Response) => {
-    try {
-      const users = await User.findAll();
-      res.json(users);
-    } catch (error) {
-      res.status(500).json({ message: "Erro ao buscar usuários" });
-    }
-  };
 
   export const createUser = async (req: Request, res: Response) => {
     try {
       const parsedData = userSchema.parse(req.body);
-      const user = await User.create(parsedData);
+      const user = await userService.createUser(parsedData);
       res.status(201).json(user);
     } catch (error) {
       if (error instanceof z.ZodError) {
-        console.log('Validation Errors:', error.errors);
-        return res.status(400).json({ message: "Dados inválidos", errors: error.errors });
+        return res.status(400).json({ message: `Dados Invalidos ${error}` });
       }
       res.status(500).json({ message: "Erro ao criar usuário" });
     }
   };
-  
 
-  export const getUserById = async (req: Request, res: Response) => {
+  export const findAllUsers = async (req: Request, res: Response) => {
     try {
-      const user = await User.findByPk(req.params.id);
-      if (user) {
-        res.json(user);
-      } else {
-        res.status(404).json({ message: "Erro ao buscar usuário" });
-      }
+         const users = await userService.findAllUsers();
+         return res.status(200).json(users);
     } catch (error) {
-      res.status(500).json({ message: "Erro ao buscar usuário" });
+         return res.status(400).json({ message: `Erro ao buscar usuários: ${error}` });
     }
-  };
+}
 
-  export const updateUser = async (req: Request, res: Response) => {
-    try {
-      const parsedData = userSchema.parse(req.body);
-      const [updated] = await User.update(parsedData, {
-        where: { id: req.params.id },
-      });
-      if (updated) {
-        const updatedUser = await User.findByPk(req.params.id);
-        res.json(updatedUser);
-      } else {
-        res.status(404).json({ message: "Erro ao atualizar usuário" });
-      }
-    } catch (error) {
-      if (error instanceof z.ZodError) {
-        return res
-          .status(400)
-          .json({ message: "Dados inválidos", errors: error.errors });
-      }
-      res.status(500).json({ message: "Erro ao atualizar usuário" });
-    }
-  };
+export const findUserById = async (req: Request, res: Response):Promise<Response> => {
+  try {
+       const idParam = IdSchema.parse(req.params);
+       const user = await userService.findUserById(idParam.id);
+       return res.status(200).json(user);
+  } catch (error) {
+       if (error instanceof ZodError) {
+        return res.status(400).json({ message: `Dados Invalidos ${error}` });
+       }
+       return res.status(400).json({ message: `Error finding user: ${error}` });
+  }
+}
 
-  export const deleteUser = async (req: Request, res: Response) => {
-    try {
-      const deleted = await User.destroy({
-        where: { id: req.params.id },
-      });
-      if (deleted) {
-        res.json({ message: "Usuário deletado com sucesso" });
-      } else {
-        res.status(404).json({ message: "Erro ao deletar usuário" });
-      }
-    } catch (error) {
-      res.status(500).json({ message: "Erro ao deletar usuário" });
+export const updateUser = async (req: Request, res: Response):Promise<Response> => {
+   try {
+       const idParam = IdSchema.parse(req.params);
+       const user = userUpdateSchema.parse(req.body);
+       const updateUser = await userService.updateUser(idParam.id, user);
+       return res.status(200).json(updateUser);
+   } catch (error) {
+       if (error instanceof ZodError) {
+        return res.status(400).json({ message: `Dados Invalidos ${error}` });
+       }
+       return res.status(400).json({ message: `Error updating user: ${error}` });
+   }
+}
+
+export const deleteUser = async (req: Request, res: Response):Promise<Response> => {
+   try {
+       const idParam = IdSchema.parse(req.params);
+       const deleteUser = await userService.deleteUser(idParam.id);
+       return res.status(200).json({ message: `User deleted successfully`, user: deleteUser });
+   } catch (error) {
+       if (error instanceof ZodError) {
+        return res.status(400).json({ message: `Dados Invalidos ${error}` });
+       }
+       return res.status(400).json({ message: `Error deleting user: ${error}` });
     }
-  };
+  }
 }

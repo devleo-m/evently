@@ -156,7 +156,7 @@
           "event_date": {
             "type": "string",
             "format": "date",
-            "example": "15/09/2024"
+            "example": "2025/01/01"
           },
           "creator_id": {
             "type": "integer",
