@@ -1,4 +1,4 @@
-import Event, { EventAtributes, EventCreationAttributes } from "../database/models/event";
+import Event, { EventAttributes, EventCreationAttributes } from "../database/models/event";
 
 class EventRepository{
     async createEvent(event: EventCreationAttributes): Promise<Event> {
@@ -25,7 +25,7 @@ class EventRepository{
         }    
     }
 
-    async updateEvent(id: number, event: Partial<EventAtributes>): Promise<Event | null> {
+    async updateEvent(id: number, event: Partial<EventAttributes>): Promise<Event | null> {
         try {
             const existingEvent = await this.findByIdEvent(id);
             if (!existingEvent) {

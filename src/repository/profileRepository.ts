@@ -1,4 +1,4 @@
-import Profile, { ProfileAtributes, ProfileCreationAttributes } from "../database/models/profile";
+import Profile, { ProfileAttributes, ProfileCreationAttributes } from "../database/models/profile";
 
 class ProfileRepository{
     async createProfile(profile: ProfileCreationAttributes): Promise<Profile> {
@@ -25,7 +25,7 @@ class ProfileRepository{
         }    
     }
 
-    async updateProfile(id: number, profile: Partial<ProfileAtributes>): Promise<Profile | null> {
+    async updateProfile(id: number, profile: Partial<ProfileAttributes>): Promise<Profile | null> {
         try {
             const existingProfile = await this.findByIdProfile(id);
             if (!existingProfile) {

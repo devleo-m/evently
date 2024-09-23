@@ -2,7 +2,7 @@ import { Model, DataTypes, Optional } from 'sequelize';
 import sequelize from '../../config/database';
 import User from './user';
 
-export interface EventAtributes {
+export interface EventAttributes {
   id: number;
   title: string;
   description: string;
@@ -10,9 +10,9 @@ export interface EventAtributes {
   creator_id: number;
 }
 
-export interface EventCreationAttributes extends Optional<EventAtributes, 'id'> {}
+export interface EventCreationAttributes extends Optional<EventAttributes, 'id'> {}
 
-class Event extends Model<EventAtributes, EventCreationAttributes> implements EventAtributes {
+class Event extends Model<EventAttributes, EventCreationAttributes> implements EventAttributes {
   public id!: number;
   public title!: string;
   public description!: string;

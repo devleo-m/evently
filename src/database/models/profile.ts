@@ -2,7 +2,7 @@ import { Model, DataTypes, Optional } from "sequelize";
 import sequelize from "../../config/database";
 import User from "./user";
 
-export interface ProfileAtributes {
+export interface ProfileAttributes {
   id: number;
   name: string;
   bio?: string;
@@ -10,9 +10,9 @@ export interface ProfileAtributes {
   user_id: number;
 }
 
-export interface ProfileCreationAttributes extends Optional<ProfileAtributes, 'id' | 'bio' | 'birth_date'> {}
+export interface ProfileCreationAttributes extends Optional<ProfileAttributes, 'id' | 'bio' | 'birth_date'> {}
 
-class Profile extends Model<ProfileAtributes, ProfileCreationAttributes> implements ProfileAtributes  {
+class Profile extends Model<ProfileAttributes, ProfileCreationAttributes> implements ProfileAttributes  {
   public id!: number;
   public name!: string;
   public bio?: string;
