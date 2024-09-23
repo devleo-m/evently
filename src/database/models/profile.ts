@@ -36,7 +36,7 @@ Profile.init(
       allowNull: true,
     },
     birth_date: {
-      type: DataTypes.DATE,
+      type: DataTypes.DATEONLY,
       allowNull: true,
     },
     user_id: {
